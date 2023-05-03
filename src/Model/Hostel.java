@@ -1,3 +1,5 @@
+package Model;
+
 import java.io.Serializable;
 
 public class Hostel implements Serializable {

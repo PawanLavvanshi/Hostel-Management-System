@@ -1,8 +1,10 @@
+package Model;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-class Student implements Serializable {
+public class Student implements Serializable {
     private int rollNo;
     private String name;
     private String fathersName;
