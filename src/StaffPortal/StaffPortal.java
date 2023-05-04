@@ -25,18 +25,18 @@ public class StaffPortal {
             System.out.println("7. Previous Menu");
             System.out.println("8. Exit from the Program");
             System.out.println("Enter your choice... ");
-            staffchoice = input.nextInt();
+            staffchoice = HostelManagementSystem.isValidInt();
             switch (staffchoice) {
                 case 1:
                     Administration.viewStaff();
                     break;
                 case 2:
                     System.out.println("Enter your ID: ");
-                    int id = input.nextInt();
+                    int id = HostelManagementSystem.isValidInt();
                     System.out.print("Enter the hostel number where you work: ");
-                    int workingHostel = input.nextInt();
+                    int workingHostel = HostelManagementSystem.isValidInt();
                     System.out.print("Enter your staff type (e.g. security, cleaner, etc.): ");
-                    input.nextLine();
+
                     String staffType = input.nextLine();
                     System.out.print("Enter your job: ");
                     String job = input.nextLine();

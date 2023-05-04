@@ -5,9 +5,7 @@ import java.security.*;
 import java.util.*;
 
 import Administration.Administration;
-import Model.Hostel;
-import Model.Staff;
-import Model.Student;
+import Model.*;
 import StaffPortal.StaffPortal;
 import StudentPortal.StudentPortal;
 
@@ -27,8 +25,7 @@ public class HostelManagementSystem {
             System.out.println("5. About");
             System.out.println("6. Exit");
             System.out.println("Enter your choice... ");
-            choice = input.nextInt();
-            input.nextLine();
+            choice = isValidInt();
             switch (choice) {
                 case 1:
                     hostelDetailsPortal();
@@ -70,8 +67,7 @@ public class HostelManagementSystem {
             System.out.println("3. Previous menu");
             System.out.println("4. Exit from program");
             System.out.println("Enter your choice... ");
-            hostelChoise = input.nextInt();
-            input.nextLine();
+            hostelChoise = isValidInt();
             switch (hostelChoise) {
                 case 1:
                     printHostelsInTable();
@@ -113,7 +109,6 @@ public class HostelManagementSystem {
     }
 
     static void hostelDetails() throws ClassNotFoundException, IOException {
-        // hostel Menu
         ArrayList<Hostel> hostels = readHostelsFromFile("Utils/hostel.ser");
         if (hostels.size() == 0) {
             System.out.println("There is no Hostel Added. Please contact Admistration.");
@@ -123,7 +118,6 @@ public class HostelManagementSystem {
         do {
             System.out.println("\n\nAvailable hostels:");
             printHostelMenu(hostels);
-            // input.nextLine();
             System.out.println("Enter the hostel number (or any non-numeric character to exit)... ");
             inputStr = input.nextLine();
             if (inputStr.matches("\\d+") && Integer.parseInt(inputStr) >= 0) {
@@ -183,7 +177,7 @@ public class HostelManagementSystem {
         } else {
             System.out.print("Enter hostel number: ");
             do {
-                int hostelNo = input.nextInt();
+                int hostelNo = isValidInt();
                 for (Hostel hostel : hostels) {
                     if (hostel.getHostelNo() == hostelNo) {
                         System.out.println("Warden name: " + hostel.getWardenName());
@@ -237,7 +231,7 @@ public class HostelManagementSystem {
                 break;
             case 2: // Admin/Warden
                 System.out.print("Enter working hostel: ");
-                referenceId = input.nextInt();
+                referenceId = isValidInt();
                 if (!checkIfHostelExists(referenceId)) {
                     System.out.println("Hostel does not exist.");
                     return false;
@@ -245,7 +239,7 @@ public class HostelManagementSystem {
                 break;
             case 3: // Student
                 System.out.print("Enter roll number: ");
-                referenceId = input.nextInt();
+                referenceId = isValidInt();
                 if (!checkIfRollnoExists(referenceId)) {
                     System.out.println("Roll number does not exist.");
                     return false;
@@ -253,7 +247,7 @@ public class HostelManagementSystem {
                 break;
             case 4: // Staff
                 System.out.print("Enter staff ID: ");
-                referenceId = input.nextInt();
+                referenceId = isValidInt();
                 if (!checkIfStaffIdExist(referenceId)) {
                     System.out.println("Staff ID does not exist.");
                     return false;
@@ -434,7 +428,7 @@ public class HostelManagementSystem {
         System.out.println("1. Log in");
         System.out.println("2. Register\nSelect one option...");
 
-        int option = input.nextInt();
+        int option = isValidInt();
         switch (option) {
             case 1:
                 while (!authenticated && remainingAttempts > 0) {
@@ -477,8 +471,10 @@ public class HostelManagementSystem {
         int value;
         try {
             value = input.nextInt();
+            input.nextLine();
             return value;
         } catch (InputMismatchException e) {
+            input.nextLine();
             System.out.println("Only Integer value acceptable!!!\n Please enter an integer: ");
             value = isValidInt();
             return value;

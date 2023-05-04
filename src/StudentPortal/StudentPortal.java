@@ -27,7 +27,7 @@ public class StudentPortal {
             System.out.println("8. Main Menu");
             System.out.println("9. Exit from Program");
             System.out.println("Enter your choice... ");
-            studentchoice = input.nextInt();
+            studentchoice = HostelManagementSystem.isValidInt();
             switch (studentchoice) {
                 case 1:
                     HostelManagementSystem.printHostelsInTable();
@@ -98,15 +98,15 @@ public class StudentPortal {
             System.out.println("4. Previous Menu");
             System.out.println("5. Exit from program");
             System.out.println("Enter your choice...");
-            studentRequestChoice = input.nextInt();
+            studentRequestChoice = HostelManagementSystem.isValidInt();
             switch (studentRequestChoice) {
                 case 1:
                     // Get the request details from the student
                     System.out.print("Enter your hostel number: ");
-                    int hostelNo = input.nextInt();
+                    int hostelNo = HostelManagementSystem.isValidInt();
                     System.out.print("Enter your room number: ");
-                    int roomNo = input.nextInt();
-                    input.nextLine();
+                    int roomNo = HostelManagementSystem.isValidInt();
+
                     System.out.print("Enter the type of staff you need (e.g. security, cleaner): ");
                     String type = input.nextLine();
                     System.out.print("Enter the staff's specific job (if known, otherwise leave blank): ");
@@ -120,8 +120,8 @@ public class StudentPortal {
                     break;
                 case 2:
                     System.out.println("Enter the Request ID(Whose status you want to know): ");
-                    int requestId = input.nextInt();
-                    input.nextLine();
+                    int requestId = HostelManagementSystem.isValidInt();
+
                     showRequestStatus(requestId);
                     break;
                 case 3:
@@ -228,9 +228,9 @@ public class StudentPortal {
 
     public static void searchRequestId() {
         System.out.println("Please enter your hostel number:");
-        int hostelNo = input.nextInt();
+        int hostelNo = HostelManagementSystem.isValidInt();
         System.out.println("Please enter your room number:");
-        int roomNo = input.nextInt();
+        int roomNo = HostelManagementSystem.isValidInt();
         String requestFile = "Utils/studentRequestToStaff.csv";
         BufferedReader br = null;
         String line = "";

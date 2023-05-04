@@ -4,6 +4,8 @@ import java.io.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Model.*;
 import HostelManagementSystem.*;
@@ -33,8 +35,7 @@ public class Administration {
             System.out.println("14. Previous Menu");
             System.out.println("15. Exit from program");
             System.out.println("Enter your choice... ");
-            adminChoice = input.nextInt();
-            input.nextLine();
+            adminChoice = HostelManagementSystem.isValidInt();
             switch (adminChoice) {
                 case 1:
                     if (HostelManagementSystem.printHostelsInTable()) {
@@ -62,23 +63,22 @@ public class Administration {
                     break;
                 case 2:
                     System.out.println("Enter Roll Number of student: ");
-                    checkIn(input.nextInt());
+                    checkIn(HostelManagementSystem.isValidInt());
                     break;
                 case 3:
                     System.out.println("Enter Roll Number of student: ");
-                    checkOut(input.nextInt());
+                    checkOut(HostelManagementSystem.isValidInt());
                     break;
                 case 4:
                     System.out.println("Enter the hostel no in which you want to add room... ");
-                    int roomAddHostelNo = input.nextInt();
-                    input.nextLine();
+                    int roomAddHostelNo = HostelManagementSystem.isValidInt();
+
                     String fileName = "Utils/hostel" + roomAddHostelNo + ".ser";
                     File roomAddHostelFile = new File(fileName);
                     if (roomAddHostelFile.exists() && HostelManagementSystem.checkIfHostelExists(roomAddHostelNo)) {
                         String ans;
                         do {
                             addHostelRoom(roomAddHostelFile, roomAddHostelNo);
-                            input.nextLine();
                             System.out.println("Want to add more room in same hostel(y/n)... ");
                             ans = input.nextLine();
                         } while (ans.equalsIgnoreCase("y"));
@@ -88,8 +88,7 @@ public class Administration {
                     break;
                 case 5:
                     System.out.println("Enter the hostel no from which you want to remove room... ");
-                    int roomRemoveHostelNo = input.nextInt();
-                    input.nextLine();
+                    int roomRemoveHostelNo = HostelManagementSystem.isValidInt();
                     String hostelNameFile = "Utils/hostel" + roomRemoveHostelNo + ".ser";
                     File roomRemoveHostelFile = new File(hostelNameFile);
                     if (roomRemoveHostelFile.exists()
@@ -97,7 +96,6 @@ public class Administration {
                         String ans;
                         do {
                             removeHostelRoom(roomRemoveHostelFile, roomRemoveHostelNo);
-                            // input.nextLine();
                             System.out.println("Want to remove more rooms from same hostel(y/n)... ");
                             ans = input.nextLine();
                         } while (ans.equalsIgnoreCase("y"));
@@ -281,16 +279,15 @@ public class Administration {
         // get hostel details from user
         System.out.println("\nEnter Hostel details to add it.");
         System.out.println("Enter hostel number: ");
-        int hostelNo = input.nextInt();
+        int hostelNo = HostelManagementSystem.isValidInt();
 
         // Check if the hostel number already exists in the file
         File hostelFile = new File("Utils/hostel.ser");
         while (HostelManagementSystem.checkIfHostelExists(hostelNo)) {
             System.out.println("Hostel with that number already exists. Please enter a different number.");
             System.out.print("Enter the hostel number: ");
-            hostelNo = input.nextInt();
+            hostelNo = HostelManagementSystem.isValidInt();
         }
-        input.nextLine();
         System.out.println("Enter hostel name: ");
         String hostelName = input.nextLine();
         System.out.println("Enter hostel address: ");
@@ -299,7 +296,10 @@ public class Administration {
         String wardenName = input.nextLine();
         System.out.println("Enter warden contact email: ");
         String wardenEmail = input.nextLine();
-
+        while (!isValidEmail(wardenEmail)) {
+            System.out.println("You enter a invalid email!!!\nPlease enter a valid email: ");
+            wardenEmail = input.nextLine();
+        }
         // create hostel object and write to file
         Hostel hostel = new Hostel(hostelNo, hostelName, hostelAddress, wardenName,
                 wardenEmail);
@@ -322,8 +322,7 @@ public class Administration {
 
     public static void removeHostel() {
         System.out.println("\nEnter Hostel Number to remove it... ");
-        int removeHostelNo = input.nextInt();
-        input.nextLine();
+        int removeHostelNo = HostelManagementSystem.isValidInt();
         String fileName = "Utils/hostel" + removeHostelNo + ".ser";
         File hostelFile = new File(fileName);
 
@@ -396,17 +395,17 @@ public class Administration {
         List<Room> rooms = readRoomsFromFile(roomAddHostelFile);
 
         System.out.println("\n\nEnter Room Number: ");
-        int roomNo = input.nextInt();
+        int roomNo = HostelManagementSystem.isValidInt();
         while (checkIfRoomNoExists(roomAddHostelFile, roomNo)) {
             System.out.println("Room No is already exist.\nPlease enter different Room No: ");
-            roomNo = input.nextInt();
+            roomNo = HostelManagementSystem.isValidInt();
         }
-        input.nextLine();
+
         System.out.print("Enter room type: ");
         String roomType = input.nextLine();
 
         System.out.print("Enter occupancy: ");
-        int occupancy = input.nextInt();
+        int occupancy = HostelManagementSystem.isValidInt();
 
         // Create a new Room object and add it to the list
         Room newRoom = new Room(roomNo, roomType, occupancy);
@@ -445,8 +444,8 @@ public class Administration {
 
     public static void removeHostelRoom(File rmFileName, int hostelNo) {
         System.out.println("Enter Room Number to remove it... ");
-        int removeRoomNo = input.nextInt();
-        input.nextLine();
+        int removeRoomNo = HostelManagementSystem.isValidInt();
+
         if (checkIfRoomNoExists(rmFileName, removeRoomNo)) {
             try {
                 List<Room> rooms = readRoomsFromFile(rmFileName);
@@ -508,14 +507,14 @@ public class Administration {
             System.out.println("5. Previous Menu");
             System.out.println("6. Exit from program");
             System.out.println("Enter your choice... ");
-            studentViewChoice = input.nextInt();
+            studentViewChoice = HostelManagementSystem.isValidInt();
             switch (studentViewChoice) {
                 case 1:
                     viewAllStudents();
                     break;
                 case 2:
                     System.out.println("Enter the hostel number: ");
-                    int hostelnum = input.nextInt();
+                    int hostelnum = HostelManagementSystem.isValidInt();
                     if (HostelManagementSystem.checkIfHostelExists(hostelnum)) {
                         viewStudentsByHostel(hostelnum);
                     } else {
@@ -524,12 +523,12 @@ public class Administration {
                     break;
                 case 3:
                     System.out.println("Enter Hostel No: ");
-                    int hostelNum = input.nextInt();
+                    int hostelNum = HostelManagementSystem.isValidInt();
                     String fileName = "Utils/hostel" + hostelNum + ".ser";
                     File hostelFile = new File(fileName);
                     if (HostelManagementSystem.checkIfHostelExists(hostelNum) && hostelFile.exists()) {
                         System.out.println("Enter the Room No: ");
-                        int roomNum = input.nextInt();
+                        int roomNum = HostelManagementSystem.isValidInt();
                         if (checkIfRoomNoExists(hostelFile, roomNum)) {
                             viewStudentsByRoom(hostelNum, roomNum);
                         } else {
@@ -541,7 +540,7 @@ public class Administration {
                     break;
                 case 4:
                     System.out.println("Enter the Roll No:");
-                    int rollNo = input.nextInt();
+                    int rollNo = HostelManagementSystem.isValidInt();
                     if (HostelManagementSystem.checkIfRollnoExists(rollNo)) {
                         viewStudentByRollNo(rollNo);
                     }
@@ -654,44 +653,41 @@ public class Administration {
         try {
             List<Student> students = HostelManagementSystem.readStudentsFromFile("Utils/student.ser");
             System.out.print("Enter rollno: ");
-            int rollno = input.nextInt();
+            int rollno = HostelManagementSystem.isValidInt();
 
             // Check if rollno already exists in Utils/student.ser file
             while (HostelManagementSystem.checkIfRollnoExists(rollno)) {
                 System.out.println("Rollno already exists. Please enter a unique rollno: ");
-                rollno = input.nextInt();
+                rollno = HostelManagementSystem.isValidInt();
             }
-            input.nextLine();
+
             System.out.print("Enter name: ");
             String name = input.nextLine();
             System.out.print("Enter father's Name: ");
             String fatherName = input.nextLine();
             System.out.print("Enter gender (M/F): ");
             String gender = input.nextLine();
-            System.out.print("Enter date of birth (dd/MM/yyyy): ");
-            String dobStr = input.nextLine();
-
-            // Parse date of birth to LocalDate
-            LocalDate dob = LocalDate.parse(dobStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            System.out.print("Enter date of birth: ");
+            LocalDate dob = getValidDate();
 
             System.out.print("Enter address: ");
             String address = input.nextLine();
             System.out.print("Enter hostel no: ");
-            int hostelNo = input.nextInt();
+            int hostelNo = HostelManagementSystem.isValidInt();
 
             // Check if hostel no available
             while (!checkIfHostelAvailable(hostelNo)) {
                 System.out.println("Please enter a different hostel no: ");
-                hostelNo = input.nextInt();
+                hostelNo = HostelManagementSystem.isValidInt();
             }
 
             System.out.print("Enter room no: ");
-            int roomNo = input.nextInt();
+            int roomNo = HostelManagementSystem.isValidInt();
 
             // Check if room available
             while (!checkIfRoomAvailable(hostelNo, roomNo)) {
                 System.out.println("Room is not available. Please enter a valid room no: ");
-                roomNo = input.nextInt();
+                roomNo = HostelManagementSystem.isValidInt();
             }
 
             // Create student object and write to Utils/student.ser file
@@ -766,8 +762,8 @@ public class Administration {
 
     public static void removeStudent() throws ClassNotFoundException {
         System.out.println("Enter the roll number of student whose entry you want to remove... ");
-        int removeRollNo = input.nextInt();
-        input.nextLine();
+        int removeRollNo = HostelManagementSystem.isValidInt();
+
         if (HostelManagementSystem.checkIfRollnoExists(removeRollNo)) {
             try {
                 List<Student> students = HostelManagementSystem.readStudentsFromFile("Utils/student.ser");
@@ -827,15 +823,15 @@ public class Administration {
             System.out.println("6. Previous Menu");
             System.out.println("7. Exit from program");
             System.out.println("Enter Your choice... ");
-            staffViewChoice = input.nextInt();
-            input.nextLine();
+            staffViewChoice = HostelManagementSystem.isValidInt();
+
             switch (staffViewChoice) {
                 case 1:
                     viewAllStaffs();
                     break;
                 case 2:
                     System.out.println("Enter the Hostel No: ");
-                    int hostelNo = input.nextInt();
+                    int hostelNo = HostelManagementSystem.isValidInt();
                     if (HostelManagementSystem.checkIfHostelExists(hostelNo)) {
                         viewStaffsByWorkingHostel(hostelNo);
                     } else {
@@ -854,7 +850,7 @@ public class Administration {
                     break;
                 case 5:
                     System.out.println("Enter Staff ID: ");
-                    int id = input.nextInt();
+                    int id = HostelManagementSystem.isValidInt();
                     if (HostelManagementSystem.checkIfStaffIdExist(id)) {
                         viewStaffById(id);
                     } else {
@@ -1013,12 +1009,12 @@ public class Administration {
     public static void addStaff() throws FileNotFoundException, IOException {
         List<Staff> staffs = HostelManagementSystem.readStaffsFromFile("Utils/staff.ser");
         System.out.println("\nEnter Staff ID: ");
-        int id = input.nextInt();
+        int id = HostelManagementSystem.isValidInt();
         while (HostelManagementSystem.checkIfStaffIdExist(id)) {
             System.out.println("Entered staff ID is already used!!! \nPlease enter a different ID: ");
-            id = input.nextInt();
+            id = HostelManagementSystem.isValidInt();
         }
-        input.nextLine();
+
         System.out.println("Enter Name: ");
         String name = input.nextLine();
         System.out.println("Enter Father Name: ");
@@ -1026,10 +1022,7 @@ public class Administration {
         System.out.print("Enter Gender (M/F): ");
         String gender = input.nextLine();
         System.out.print("Enter Date of Birth (dd/MM/yyyy): ");
-        String dobStr = input.nextLine();
-
-        // Parse date of birth to LocalDate
-        LocalDate dob = LocalDate.parse(dobStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate dob = getValidDate();
 
         System.out.print("Enter address: ");
         String address = input.nextLine();
@@ -1039,17 +1032,25 @@ public class Administration {
         System.out.println("Enter the Job: ");
         String job = input.nextLine();
         System.out.println("Enter Working Hostel No: ");
-        int workingHostel = input.nextInt();
+        int workingHostel = HostelManagementSystem.isValidInt();
         while (!HostelManagementSystem.checkIfHostelExists(workingHostel)) {
             System.out.println("Hostel" + workingHostel + " does not exist.\nPlease enter a valid hostel No: ");
-            workingHostel = input.nextInt();
+            workingHostel = HostelManagementSystem.isValidInt();
         }
-        input.nextLine();
+
         System.out.println("Enter Email: ");
         String email = input.nextLine();
+        while (!isValidEmail(email)) {
+            System.out.println("You enter a invalid email!!!\nPlease enter a valid email: ");
+            email = input.nextLine();
+        }
         System.out.println("Enter Mobile Number: ");
-        long mobNo = input.nextLong();
-
+        String mobNoStr = input.nextLine();
+        while (!isValidMobNo(mobNoStr)) {
+            System.out.println("Not a Valid Mobile No!!!\nPlease enter a valid mobile no: ");
+            mobNoStr = input.nextLine();
+        }
+        long mobNo = Long.parseLong(mobNoStr);
         // Create staff object and write to Utils/staff.ser file
         Staff staff = new Staff(id, name, fname, gender, dob, address, type, job, workingHostel, email, mobNo);
         staffs.add(staff);
@@ -1075,8 +1076,8 @@ public class Administration {
 
     public static void removeStaff() throws ClassNotFoundException {
         System.out.println("\nEnter the ID of staff whose entry you want to remove... ");
-        int removeStaffId = input.nextInt();
-        input.nextLine();
+        int removeStaffId = HostelManagementSystem.isValidInt();
+
         if (HostelManagementSystem.checkIfStaffIdExist(removeStaffId)) {
             try {
                 List<Staff> staffs = HostelManagementSystem.readStaffsFromFile("Utils/staff.ser");
@@ -1122,6 +1123,101 @@ public class Administration {
         } else {
             System.out.println("Staff member with Staff Id " + removeStaffId + " doesn't exist.");
         }
+    }
+
+    public static boolean isValidEmail(String email) {
+        // Regular expression for checking the email format
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
+        // Create a pattern object from the regex string
+        Pattern pattern = Pattern.compile(emailRegex);
+
+        // Use the pattern object to create a matcher object for the email string
+        Matcher matcher = pattern.matcher(email);
+
+        // Test the email against the regular expression
+        return matcher.matches();
+    }
+
+    public static boolean isValidMobNo(String mobileNo) {
+        // Check if the mobile number contains a country code
+        if (mobileNo.startsWith("+") || mobileNo.startsWith("00")) {
+            System.out.println("Enter mobile no without country code.");
+            return false;
+        }
+
+        // Check if the mobile number starts with 0
+        if (mobileNo.startsWith("0")) {
+            System.out.println("Enter mobile no without starting with 0.");
+            return false;
+        }
+
+        // Remove all non-digit characters from the mobile number
+        mobileNo = mobileNo.replaceAll("[^\\d]", "");
+
+        // Check if the mobile number has exactly 10 digits
+        if (mobileNo.length() != 10) {
+            System.out.println("Mobile no should contains 10 digits.");
+            return false;
+        }
+
+        // Test the mobile number against the regular expression for valid mobile
+        // numbers
+        String mobileNoRegex = "^[1-9]\\d{9}$";
+        Pattern pattern = Pattern.compile(mobileNoRegex);
+        Matcher matcher = pattern.matcher(mobileNo);
+        return matcher.matches();
+    }
+
+    public static LocalDate getValidDate() {
+        Scanner scanner = new Scanner(System.in);
+
+        // Prompt user for year
+        System.out.print("Enter year: ");
+        int year = scanner.nextInt();
+        boolean isLeapYear = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+
+        // Prompt user for month
+        int month = 0;
+        while (month < 1 || month > 12) {
+            System.out.print("Enter month (1-12): ");
+            month = scanner.nextInt();
+            if (month < 1 || month > 12) {
+                System.out.println("Invalid month! Please enter a valid month.");
+            }
+        }
+
+        // Prompt user for day
+        int maxDay = 31;
+        switch (month) {
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                maxDay = 30;
+                break;
+            case 2:
+                if (isLeapYear) {
+                    maxDay = 29;
+                } else {
+                    maxDay = 28;
+                }
+                break;
+            default:
+                break;
+        }
+
+        int day = 0;
+        while (day < 1 || day > maxDay) {
+            System.out.printf("Enter day (1-%d): ", maxDay);
+            day = scanner.nextInt();
+            if (day < 1 || day > maxDay) {
+                System.out.println("Invalid day! Please enter a valid day.");
+            }
+        }
+        scanner.close();
+        // Return LocalDate object
+        return LocalDate.of(year, month, day);
     }
 
 }
