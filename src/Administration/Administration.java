@@ -19,24 +19,62 @@ public class Administration {
         do {
             System.out.println("\n\nWelcome To Admistration Portal");
             System.out.println("------------------------------");
-            System.out.println("1. View hostels");
-            System.out.println("2. Check In");
-            System.out.println("3. Check out ");
-            System.out.println("4. Add Room");
-            System.out.println("5. Remove Room");
-            System.out.println("6. Add hostel");
-            System.out.println("7. Remove Hostel");
-            System.out.println("8. View students");
-            System.out.println("9. Add Student");
-            System.out.println("10. Remove student");
-            System.out.println("11. View Staff members");
-            System.out.println("12. Add Staff member");
-            System.out.println("13. Remove Staff member");
-            System.out.println("14. Previous Menu");
-            System.out.println("15. Exit from program");
+            System.out.println("1. Check In");
+            System.out.println("2. Check out ");
+            System.out.println("3. Hostel Related work");
+            System.out.println("4. Student Related work");
+            System.out.println("5. Staff Related work");
+            System.out.println("6. Previous Menu");
+            System.out.println("7. Exit from program");
             System.out.println("Enter your choice... ");
             adminChoice = HostelManagementSystem.isValidInt();
             switch (adminChoice) {
+                case 1:
+                    System.out.println("Enter Roll Number of student: ");
+                    checkIn(HostelManagementSystem.isValidInt());
+                    break;
+                case 2:
+                    System.out.println("Enter Roll Number of student: ");
+                    checkOut(HostelManagementSystem.isValidInt());
+                    break;
+                case 3:
+                    hostelRelated();
+                    break;
+                case 4:
+                    studentRelated();
+                    break;
+                case 5:
+                    staffRelated();
+                    break;
+                case 6:
+                    System.out.println("Redirected to Main Menu.... \n");
+                    break;
+                case 7:
+                    HostelManagementSystem.quit();
+                    break;
+                default:
+                    System.out.println("Wrong Choice");
+
+            }
+        } while (adminChoice != 6);
+
+    }
+
+    public static void hostelRelated() throws Exception {
+        int hostelRelatedChoice = 0;
+        do {
+            System.out.println("Hostel Related work");
+            System.out.println("-------------------");
+            System.out.println("1. View hostel");
+            System.out.println("2. Add hostel");
+            System.out.println("3. Remove hostel");
+            System.out.println("4. Add room");
+            System.out.println("5. Remove room");
+            System.out.println("6. Previous menu");
+            System.out.println("7. Main menu");
+            System.out.println("8. Exit from program");
+            hostelRelatedChoice = HostelManagementSystem.isValidInt();
+            switch (hostelRelatedChoice) {
                 case 1:
                     if (HostelManagementSystem.printHostelsInTable()) {
                         String inputStr;
@@ -62,12 +100,10 @@ public class Administration {
                     }
                     break;
                 case 2:
-                    System.out.println("Enter Roll Number of student: ");
-                    checkIn(HostelManagementSystem.isValidInt());
+                    addHostel();
                     break;
                 case 3:
-                    System.out.println("Enter Roll Number of student: ");
-                    checkOut(HostelManagementSystem.isValidInt());
+                    removeHostel();
                     break;
                 case 4:
                     System.out.println("Enter the hostel no in which you want to add room... ");
@@ -104,40 +140,95 @@ public class Administration {
                     }
                     break;
                 case 6:
-                    addHostel();
+                    System.out.println("Redirecting to Previous Menu...");
                     break;
                 case 7:
-                    removeHostel();
+                    System.out.println("Redirected to Main Menu...");
+                    HostelManagementSystem.mainMenu();
                     break;
                 case 8:
-                    viewStudents();
-                    break;
-                case 9:
-                    addStudent();
-                    break;
-                case 10:
-                    removeStudent();
-                    break;
-                case 11:
-                    viewStaff();
-                    break;
-                case 12:
-                    addStaff();
-                    break;
-                case 13:
-                    removeStaff();
-                    break;
-                case 14:
-                    System.out.println("Redirected to Main Menu.... \n");
-                    break;
-                case 15:
                     HostelManagementSystem.quit();
                     break;
                 default:
-                    System.out.println("Wrong Choice");
-
+                    System.out.println("Wrong Choice!!!");
             }
-        } while (adminChoice != 14);
+        } while (hostelRelatedChoice != 6);
+    }
+
+    public static void studentRelated() throws Exception {
+        int studentRelatedChoice;
+        do {
+            System.out.println("Student Related work");
+            System.out.println("--------------------");
+            System.out.println("1. View Students");
+            System.out.println("2. Add Student");
+            System.out.println("3. Remove Student");
+            System.out.println("4. Previous menu");
+            System.out.println("5. Main Menu");
+            System.out.println("6. Exit from program");
+            studentRelatedChoice = HostelManagementSystem.isValidInt();
+            switch (studentRelatedChoice) {
+                case 1:
+                    viewStudents();
+                    break;
+                case 2:
+                    addStudent();
+                    break;
+                case 3:
+                    removeStudent();
+                    break;
+                case 4:
+                    System.out.println("Redirecting to previous menu... ");
+                    break;
+                case 5:
+                    System.out.println("Redirecting to Main Menu...");
+                    HostelManagementSystem.mainMenu();
+                    break;
+                case 6:
+                    HostelManagementSystem.quit();
+                    break;
+                default:
+                    System.out.println("Wrong Choice!!!");
+            }
+        } while (studentRelatedChoice != 5);
+    }
+
+    public static void staffRelated() throws Exception {
+        int staffRelatedChoice;
+        do {
+            System.out.println("Student Related work");
+            System.out.println("--------------------");
+            System.out.println("1. View Staffs");
+            System.out.println("2. Add Staff");
+            System.out.println("3. Remove Staff");
+            System.out.println("4. Previous menu");
+            System.out.println("5. Main Menu");
+            System.out.println("6. Exit from program");
+            staffRelatedChoice = HostelManagementSystem.isValidInt();
+            switch (staffRelatedChoice) {
+                case 1:
+                    viewStaff();
+                    break;
+                case 2:
+                    addStaff();
+                    break;
+                case 3:
+                    removeStaff();
+                    break;
+                case 4:
+                    System.out.println("Redirecting to previous menu... ");
+                    break;
+                case 5:
+                    System.out.println("Redirecting to Main Menu...");
+                    HostelManagementSystem.mainMenu();
+                    break;
+                case 6:
+                    HostelManagementSystem.quit();
+                    break;
+                default:
+                    System.out.println("Wrong Choice!!!");
+            }
+        } while (staffRelatedChoice != 5);
 
     }
 
